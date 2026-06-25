@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-sans text-slate-800 bg-white;
+  }
+
+  ::selection {
+    @apply bg-gold-500/20 text-navy-900;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold text-white 
+           bg-navy-900 hover:bg-navy-800 transition-all duration-200 
+           shadow-lg shadow-navy-900/20 hover:shadow-xl hover:shadow-navy-900/30 
+           active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold 
+           text-navy-900 bg-white border-2 border-navy-900 
+           hover:bg-navy-50 transition-all duration-200 
+           active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-gold {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold 
+           text-white bg-gold-500 hover:bg-gold-600 transition-all duration-200 
+           shadow-lg shadow-gold-500/30 hover:shadow-xl hover:shadow-gold-500/40 
+           active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .section-heading {
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold text-navy-900;
+  }
+
+  .section-subheading {
+    @apply text-lg md:text-xl text-slate-600 max-w-2xl;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl p-6 md:p-8 shadow-lg shadow-slate-200/50 
+           border border-slate-100 hover:shadow-xl hover:shadow-slate-200/60 
+           transition-all duration-300;
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-navy-900 to-gold-500;
+  }
+
+  .section-padding {
+    @apply px-4 sm:px-6 lg:px-8 py-16 md:py-24;
+  }
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes float-delayed {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes float-delayed-2 {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+.animate-float-delayed {
+  animation: float-delayed 4s ease-in-out 0.5s infinite;
+}
+.animate-float-delayed-2 {
+  animation: float-delayed-2 4s ease-in-out 1s infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-slate-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 rounded-full hover:bg-slate-400;
+}
