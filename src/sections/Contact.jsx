@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Send, ArrowRight, CheckCircle, Mail, Phone, MapPin, Clock } from 'lucide-react'
+import { notifyDiscord, clip } from '../config'
 
 const businessTypes = [
   'Barber Shop / Salon',
@@ -64,21 +65,27 @@ export default function Contact() {
     e.preventDefault()
     setLoading(true)
 
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      })
-      
-      if (!response.ok) throw new Error('Failed to send')
-      
-      setSubmitted(true)
-    } catch (err) {
-      console.error(err)
-    } finally {
-      setLoading(false)
-    }
+    // Fire-and-forget Discord notification (no backend on GitHub Pages).
+    notifyDiscord({
+      embed: {
+        title: '\ud83d\udcec New Contact Form Submission',
+        color: 0x4f46e5,
+        fields: [
+          { name: 'Name', value: clip(formData.name), inline: true },
+          { name: 'Email', value: clip(formData.email), inline: true },
+          { name: 'Phone', value: clip(formData.phone), inline: true },
+          { name: 'Business Name', value: clip(formData.businessName), inline: true },
+          { name: 'Business Type', value: clip(formData.businessType), inline: true },
+          { name: 'Budget', value: clip(formData.budget), inline: true },
+          { name: 'Timeline', value: clip(formData.timeline), inline: true },
+          { name: 'Message', value: clip(formData.message) },
+        ],
+        timestamp: new Date().toISOString(),
+      },
+    })
+
+    setSubmitted(true)
+    setLoading(false)
   }
 
   if (submitted) {

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { CalendarCheck, ArrowRight, CheckCircle, Clock, Building2, Phone, Mail, User } from 'lucide-react'
+import { notifyDiscord, clip } from '../config'
 
 const businessTypes = [
   'Barber Shop / Salon',
@@ -46,21 +47,26 @@ export default function Booking() {
     e.preventDefault()
     setLoading(true)
 
-    try {
-      const response = await fetch('/api/booking', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      })
-      
-      if (!response.ok) throw new Error('Failed to book')
-      
-      setSubmitted(true)
-    } catch (err) {
-      console.error(err)
-    } finally {
-      setLoading(false)
-    }
+    // Fire-and-forget Discord notification (no backend on GitHub Pages).
+    notifyDiscord({
+      embed: {
+        title: '\ud83d\udcc5 New Consultation Booking',
+        color: 0x4f46e5,
+        fields: [
+          { name: 'Name', value: clip(formData.name), inline: true },
+          { name: 'Email', value: clip(formData.email), inline: true },
+          { name: 'Phone', value: clip(formData.phone), inline: true },
+          { name: 'Business Type', value: clip(formData.businessType), inline: true },
+          { name: 'Preferred Date', value: clip(formData.date), inline: true },
+          { name: 'Preferred Time', value: clip(formData.time), inline: true },
+          { name: 'Details', value: clip(formData.description) },
+        ],
+        timestamp: new Date().toISOString(),
+      },
+    })
+
+    setSubmitted(true)
+    setLoading(false)
   }
 
   if (submitted) {
